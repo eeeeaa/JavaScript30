@@ -6,7 +6,6 @@
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
 <body class="bod">
-
   <div class="one">
     <div class="two">
       <div class="three">
@@ -41,9 +40,38 @@
   }
 </style>
 
-<button></button>
+<button>Click me!</button>
 <script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+  console.log(divs);
 
+  function logText(e){
+    e.stopPropagation(); //use this to stop bubling, i.e. it only trigger 'three' if click 'three'
+    console.log(this.classList.value);
+  }
+
+  //bubbling
+  //Example, you click 'three'
+  //when you click 'three' element it go through the element from top-down (e.g. bod->one->two->three)
+  //when it reaches the specify point, it triggers the event from 'three' upward (called this bubbling)
+  //so it trigggers click event from three->two->one->bod
+  document.body.addEventListener('click', logText);
+  divs.forEach(div => div.addEventListener('click', logText, {
+    //default is false -> make it so that it trigger event as it go down (so you get bod->one->two->three instead))
+    //capture: true 
+  }));
+
+  button.addEventListener('click', (e)=> {
+    e.stopPropagation();
+    console.log('Click!!!');
+  },{
+    //this makes it listen to click event once and unbind itself
+    //e.g. you click the button, it show log, and if you click again, you get nothing
+    //(equivalent to button.removeEventListener('click',logText, capture?:boolean))
+    once: true
+  });
+  
 </script>
 </body>
 </html>
