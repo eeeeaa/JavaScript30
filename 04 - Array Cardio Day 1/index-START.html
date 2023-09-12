@@ -38,29 +38,106 @@
     
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    const inventorBornIn1500s = inventors.filter((inventor) => {return inventor.year < 1600 && inventor.year >= 1500;});
+    console.table(inventorBornIn1500s);
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+    const inventorFullNames = inventors.map((inventor)=> {
+      return inventor.first + " " + inventor.last;
+    });
+    console.table(inventorFullNames);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    const sortedInventorByBirth = inventors.sort((a,b) => {
+      if(a.year <= b.year){
+        return 1; //return 1, choose a
+      }else{
+        return -1; //return -1, choose b
+      }
+    });
+    console.table(sortedInventorByBirth);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
 
+    const inventorSumYears = inventors.reduce((total, inventor) => {
+      //total -> variable that is keep for each iteration
+      return total + (inventor.passed - inventor.year);
+    }, 0); //initial value of total (if not set, it will be undefined)
+
+    /**
+    the above is equivalent to
+    let total = 0;
+    for(let i = 0; i < inventors.length;i++){
+      total += (inventors[i].passed - inventors[i].year);
+    }
+    **/
+
+    console.log(inventorSumYears);
+
     // 5. Sort the inventors by years lived
+    const sortedInventorsByAge = inventors
+    .map((inventor) => {
+      let newInventor = inventor;
+      newInventor.age = newInventor.passed - newInventor.year;
+      return newInventor;
+    })
+    .sort((a,b) => {
+      //oldest to youngest
+      return a.age <= b.age ? 1: -1;
+    });
+
+    console.table(sortedInventorsByAge);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+    //do this in console on the wiki page
+    /******
+    const category = document.querySelector('.mw-category');
+    const links = [...category.querySelectorAll('a')]; 
+        //need to convert nodelist to array
+        // [...] -> spread, put item inside and spread it to the entire array
+        //can also do Array.from(category.querySelectorAll('a'));
+  
+    const de = links
+                  .map(link => link.textContent)
+                  .filter(text => text.includes("de"));
+    console.table(de);
+    *****/
+
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const sortedPeopleByLastName = people.sort((a, b) => {
+      let elementA = a.split(",");
+      let elementB = b.split(",");
+
+      if(elementA[1] > elementB[1]){
+        return 1;
+      }else{
+        return -1;
+      }
+    });
+
+    console.table(sortedPeopleByLastName);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
 
+    const transportation = data.reduce((totalObj, vehicle) => {
+      if(isNaN(totalObj[vehicle])){
+        totalObj[vehicle] = 0;
+      } else {
+        totalObj[vehicle]++;
+      }
+      return totalObj;
+    },{});
+
+    console.table(transportation);
   </script>
 </body>
 </html>
